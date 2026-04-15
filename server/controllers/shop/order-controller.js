@@ -29,6 +29,12 @@ const createOrder = async (req, res) => {
         return_url: "http://localhost:5173/shop/paypal-return",
         cancel_url: "http://localhost:5173/shop/paypal-cancel",
       },
+      application_context: {
+        brand_name: "MERN E-Commerce",
+        landing_page: "BILLING",
+        user_action: "PAY_NOW",
+        shipping_preference: "NO_SHIPPING",
+      },
       transactions: [
         {
           item_list: {
@@ -85,6 +91,74 @@ const createOrder = async (req, res) => {
           orderId: newlyCreatedOrder._id,
         });
       }
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Some error occured!",
+    });
+  }
+};
+
+const saveOrder = async (req, res) => {
+  try {
+    const {
+      userId,
+      cartId,
+      cartItems,
+      addressInfo,
+      orderStatus,
+      paymentMethod,
+      paymentStatus,
+      totalAmount,
+      orderDate,
+      orderUpdateDate,
+      paymentId,
+      payerId,
+    } = req.body;
+
+    const newlyCreatedOrder = new Order({
+      userId,
+      cartId,
+      cartItems,
+      addressInfo,
+      orderStatus,
+      paymentMethod,
+      paymentStatus,
+      totalAmount,
+      orderDate,
+      orderUpdateDate,
+      paymentId,
+      payerId,
+    });
+
+    await newlyCreatedOrder.save();
+
+    if (paymentStatus === "paid") {
+      for (let item of cartItems) {
+        let product = await Product.findById(item.productId);
+
+        if (!product) {
+          return res.status(404).json({
+            success: false,
+            message: `Product not found for id ${item.productId}`,
+          });
+        }
+
+        product.totalStock -= item.quantity;
+        await product.save();
+      }
+
+      if (cartId) {
+        await Cart.findByIdAndDelete(cartId);
+      }
+    }
+
+    res.status(201).json({
+      success: true,
+      data: newlyCreatedOrder,
+      orderId: newlyCreatedOrder._id,
     });
   } catch (e) {
     console.log(e);
@@ -201,6 +275,7 @@ const getOrderDetails = async (req, res) => {
 
 module.exports = {
   createOrder,
+  saveOrder,
   capturePayment,
   getAllOrdersByUser,
   getOrderDetails,
