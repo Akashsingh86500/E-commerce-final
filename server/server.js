@@ -21,10 +21,19 @@ const shopReviewRouter = require("./routes/shop/review-routes");
 const commonFeatureRouter = require("./routes/common/feature-routes");
 
 // ✅ MongoDB Connection (FIXED)
+const mongoUri = process.env.MONGO_URI;
+if (!mongoUri) {
+  console.error("❌ MONGO_URI is missing. Set it in your environment variables.");
+  process.exit(1);
+}
+
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(mongoUri)
   .then(() => console.log("✅ MongoDB connected"))
-  .catch((error) => console.log("❌ MongoDB error:", error));
+  .catch((error) => {
+    console.error("❌ MongoDB error:", error);
+    process.exit(1);
+  });
 
 // App init
 const app = express();
