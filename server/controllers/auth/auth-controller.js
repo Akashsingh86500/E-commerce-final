@@ -6,12 +6,19 @@ const User = require("../../models/User");
 const registerUser = async (req, res) => {
   const { userName, email, password } = req.body;
 
+  if (!userName || !email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide userName, email, and password.",
+    });
+  }
+
   try {
     const checkUser = await User.findOne({ email });
     if (checkUser)
-      return res.json({
+      return res.status(409).json({
         success: false,
-        message: "User Already exists with the same email! Please try again",
+        message: "User already exists with the same email. Please try again.",
       });
 
     const hashPassword = await bcrypt.hash(password, 12);
@@ -68,7 +75,12 @@ const loginUser = async (req, res) => {
       { expiresIn: "60m" }
     );
 
-    res.cookie("token", token, { httpOnly: true, secure: false }).json({
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+      maxAge: 60 * 60 * 1000,
+    }).json({
       success: true,
       message: "Logged in successfully",
       user: {
@@ -90,7 +102,11 @@ const loginUser = async (req, res) => {
 //logout
 
 const logoutUser = (req, res) => {
-  res.clearCookie("token").json({
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+  }).json({
     success: true,
     message: "Logged out successfully!",
   });
