@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { apiBase } from "../../lib/api";
+import { apiBase } from "../../../lib/api";
 
 const initialState = {
   orderList: [],

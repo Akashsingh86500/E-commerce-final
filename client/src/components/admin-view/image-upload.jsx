@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { Skeleton } from "../ui/skeleton";
-import { apiBase } from "../../../lib/api";
+import { apiBase } from "../../lib/api";
 
 function ProductImageUpload({
   imageFile,
