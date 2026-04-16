@@ -33,7 +33,9 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin:  ["http://localhost:5173", "http://localhost:5174", "https://e-commerce-final-beta.vercel.app"],
+    origin:  ["http://localhost:5173", "http://localhost:5174", "https://e-commerce-final-beta.vercel.app",
+    "e-commerce-final-6v1sh0j8s-akashsingh86500s-projects.vercel.app"
+    ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",
