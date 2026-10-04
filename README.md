@@ -1726,8 +1726,8 @@ If this repository is intended for public distribution, add a dedicated
 
 **Sangam Mukherjee**
 
-Backend package metadata identifies the project author as Sangam
-Mukherjee.
+Backend package metadata identifies the project author as Akash
+Chaudhary.
 
 ------------------------------------------------------------------------
 
