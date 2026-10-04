@@ -1,4 +1,3 @@
-::: {align="center"}
 # 🛍️ MERN E-Commerce Platform
 
 ### A full-stack e-commerce application built with React, Express, MongoDB, PayPal and Cloudinary.
