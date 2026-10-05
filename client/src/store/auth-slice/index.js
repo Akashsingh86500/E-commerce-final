@@ -63,6 +63,7 @@ export const checkAuth = createAsyncThunk(
     const response = await axios.get(
       `${apiBase}/api/auth/check-auth`,
       {
+        timeout: 15000,
         withCredentials: true,
         headers: {
           "Cache-Control":

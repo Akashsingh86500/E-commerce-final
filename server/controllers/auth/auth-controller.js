@@ -2,6 +2,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
 
+const authCookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+};
+
 //register
 const registerUser = async (req, res) => {
   const { userName, email, password } = req.body;
@@ -79,9 +85,7 @@ const loginUser = async (req, res) => {
     );
 
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      ...authCookieOptions,
       maxAge: 60 * 60 * 1000,
     }).json({
       success: true,
@@ -105,11 +109,7 @@ const loginUser = async (req, res) => {
 //logout
 
 const logoutUser = (req, res) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
-  }).json({
+  res.clearCookie("token", authCookieOptions).json({
     success: true,
     message: "Logged out successfully!",
   });

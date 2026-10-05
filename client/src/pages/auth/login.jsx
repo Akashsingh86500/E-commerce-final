@@ -26,7 +26,10 @@ function AuthLogin() {
         });
       } else {
         toast({
-          title: data?.payload?.message,
+          title:
+            data?.payload?.message ||
+            data?.error?.message ||
+            "Unable to sign in. Check the API connection and try again.",
           variant: "destructive",
         });
       }
