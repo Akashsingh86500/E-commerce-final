@@ -19,8 +19,6 @@ function ShoppingCheckout() {
 
   const cartItemsList = cartItems?.items ?? [];
 
-  console.log(currentSelectedAddress, "selectedAddress");
-
   const totalCartAmount = cartItemsList.reduce(
     (sum, currentItem) =>
       sum +
@@ -80,7 +78,6 @@ function ShoppingCheckout() {
     };
 
     dispatch(createNewOrder(orderData)).then((data) => {
-      console.log(data, "sangam");
       if (data?.payload?.success) {
         setIsPaymemntStart(true);
       } else {

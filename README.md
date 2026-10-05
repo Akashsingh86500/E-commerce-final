@@ -1603,6 +1603,13 @@ Recommended platforms:
 -   Netlify
 -   Cloudflare Pages
 
+For Vercel, set the project root directory to `client` so it uses
+`client/vercel.json` and the Vite build configuration. Add
+`VITE_API_URL` in the Vercel project environment variables with the
+deployed backend URL (for example, `https://your-backend-domain.com`),
+then redeploy. The rewrite serves the React app for client-side routes
+such as `/auth/login` when opened or refreshed directly.
+
 ### Backend
 
 Recommended platforms:

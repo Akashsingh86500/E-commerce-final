@@ -32,8 +32,6 @@ function App() {
     dispatch(checkAuth());
   }, [dispatch]);
 
-  console.log(isAuthenticated, user);
-
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
